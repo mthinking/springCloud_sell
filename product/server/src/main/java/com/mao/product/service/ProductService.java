@@ -1,6 +1,8 @@
 package com.mao.product.service;
 
-import com.mao.product.dto.CartDTO;
+
+import com.mao.product.common.DecreaseStockInput;
+import com.mao.product.common.ProductInfoOutput;
 import com.mao.product.entity.ProductInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +26,10 @@ public interface ProductService {
     ProductInfo save(ProductInfo productInfo);
 
     //加库存
-    void increaseStock(List<CartDTO> cartDTOList);
+    void increaseStock(List<DecreaseStockInput> cartDTOList);
 
     //减库存
-    void  decreaseStock(List<CartDTO> cartDTOList);
+    void  decreaseStock(List<DecreaseStockInput> cartDTOList);
 
-    List<ProductInfo> findList(List<String> productIdList);
+    List<ProductInfoOutput> findList(List<String> productIdList);
 }

@@ -29,7 +29,7 @@ public class ProductCategoryDaoTest {
         ProductCategory p = new ProductCategory();
         p.setCategoryName("电脑");
         p.setCategoryType(4);
-        repository.save(p);
+//        repository.save(p);
     }
 
     @Test

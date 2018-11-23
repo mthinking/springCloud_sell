@@ -20,11 +20,9 @@ import java.util.stream.Collectors;
 
 /**
  * 商品
- * Created by 廖师兄
- * 2017-12-09 21:13
  */
 @RestController
-@RequestMapping("/com/mao/product")
+@RequestMapping("/product")
 public class ProductController {
 
     @Autowired

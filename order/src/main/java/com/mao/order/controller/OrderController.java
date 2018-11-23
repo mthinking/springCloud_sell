@@ -26,8 +26,7 @@ import java.util.Map;
 public class OrderController {
 
     @Autowired
-    private OrderService  ;
-
+    private OrderService  orderService;
     /**
      * 1. 参数检验
      * 2. 查询商品信息(调用商品服务)

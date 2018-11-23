@@ -1,5 +1,6 @@
 package com.mao.product.controller;
 
+import com.mao.product.dto.CartDTO;
 import com.mao.product.entity.ProductCategory;
 import com.mao.product.entity.ProductInfo;
 import com.mao.product.service.CategoryService;
@@ -72,18 +73,18 @@ public class ProductController {
         return ResultVOUtil.success(productVOList);
     }
 
-//    /**
-//     * 获取商品列表(给订单服务用的)
-//     * @param productIdList
-//     * @return
-//     */
-//    @PostMapping("/listForOrder")
-//    public List<ProductInfoOutput> listForOrder(@RequestBody List<String> productIdList) {
-//        return productService.findList(productIdList);
-//    }
-//
-//    @PostMapping("/decreaseStock")
-//    public void decreaseStock(@RequestBody List<DecreaseStockInput> decreaseStockInputList) {
-//        productService.decreaseStock(decreaseStockInputList);
-//    }
+    /**
+     * 获取商品列表(给订单服务用的)
+     * @param productIdList
+     * @return
+     */
+    @PostMapping("/listForOrder")
+    public List<ProductInfo> listForOrder(@RequestBody List<String> productIdList) {
+        return productService.findList(productIdList);
+    }
+
+    @PostMapping("/decreaseStock")
+    public void decreaseStock(@RequestBody List<CartDTO> decreaseStockInputList) {
+        productService.decreaseStock(decreaseStockInputList);
+    }
 }

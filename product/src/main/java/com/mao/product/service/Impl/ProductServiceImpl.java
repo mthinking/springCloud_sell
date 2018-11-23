@@ -1,6 +1,7 @@
 package com.mao.product.service.Impl;
 
 import com.mao.product.dao.ProductInfoDao;
+import com.mao.product.dto.CartDTO;
 import com.mao.product.entity.ProductInfo;
 import com.mao.product.enums.ProductStatusEnum;
 import com.mao.product.enums.ResultEnum;
@@ -41,33 +42,38 @@ public class ProductServiceImpl implements ProductService {
         return repository.save(productInfo);
     }
 
-//    @Override
-//    public void increaseStock(List<CartDTO> cartDTOList) {
-//        for (CartDTO cartDTO : cartDTOList){
-//            ProductInfo productInfo = repository.getOne(cartDTO.getProductId());
-//            if (productInfo == null){
-//                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
-//            }
-//            Integer result = productInfo.getProductStock()+cartDTO.getProductQuantity();
-//            productInfo.setProductStock(result);
-//            repository.save(productInfo);
-//        }
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void decreaseStock(List<CartDTO> cartDTOList) {
-//        for (CartDTO cartDTO : cartDTOList){
-//            ProductInfo productInfo = repository.getOne(cartDTO.getProductId());
-//            if (productInfo == null){
-//                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
-//            }
-//            Integer result = productInfo.getProductStock() - cartDTO.getProductQuantity();
-//            if (result < 0){
-//                throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
-//            }
-//            productInfo.setProductStock(result);
-//            repository.save(productInfo);
-//        }
-//    }
+    @Override
+    public void increaseStock(List<CartDTO> cartDTOList) {
+        for (CartDTO cartDTO : cartDTOList){
+            ProductInfo productInfo = repository.getOne(cartDTO.getProductId());
+            if (productInfo == null){
+                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            }
+            Integer result = productInfo.getProductStock()+cartDTO.getProductQuantity();
+            productInfo.setProductStock(result);
+            repository.save(productInfo);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void decreaseStock(List<CartDTO> cartDTOList) {
+        for (CartDTO cartDTO : cartDTOList){
+            ProductInfo productInfo = repository.getOne(cartDTO.getProductId());
+            if (productInfo == null){
+                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            }
+            Integer result = productInfo.getProductStock() - cartDTO.getProductQuantity();
+            if (result < 0){
+                throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
+            }
+            productInfo.setProductStock(result);
+            repository.save(productInfo);
+        }
+    }
+
+    @Override
+    public List<ProductInfo> findList(List<String> productIdList) {
+        return repository.findByProductIdIn(productIdList);
+    }
 }

@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 查询商品信息（调用商品服务）
         String orderId = KeyUtil.genUniqueKey();
-        List<String> productIdList = orderDTO.getOrderDetailList().stream().map(OrderDetail::getDetailId).collect(Collectors.toList());
+        List<String> productIdList = orderDTO.getOrderDetailList().stream().map(OrderDetail::getProductId).collect(Collectors.toList());
         List<ProductInfoOutput> ProductInfoList = productClient.listForOrder(productIdList);
         //计算总价
         BigDecimal orderAmount = new BigDecimal(BigInteger.ZERO);
@@ -53,12 +53,12 @@ public class OrderServiceImpl implements OrderService {
             for (ProductInfoOutput productInfo : ProductInfoList){
                 if (productInfo.getProductId().equals(orderDetail.getProductId())){
                    orderAmount = productInfo.getProductPrice().multiply(new BigDecimal(orderDetail.getProductQuantity())).add(orderAmount);
-                }
                 BeanUtils.copyProperties(productInfo,orderDetail);
                 orderDetail.setOrderId(orderId);
                 orderDetail.setDetailId(KeyUtil.genUniqueKey());
                 //订单详情入库
                 orderDetailDao.save(orderDetail);
+                }
             }
         }
         // 扣库存（调用商品服务）

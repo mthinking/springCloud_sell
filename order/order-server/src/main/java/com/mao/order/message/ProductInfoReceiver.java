@@ -1,20 +1,38 @@
 package com.mao.order.message;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.mao.order.utils.JsonUtil;
 import com.mao.product.common.ProductInfoOutput;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 @Slf4j
 @Component
 public class ProductInfoReceiver {
 
+    private static final String PRODUCT_STOCK_TEMPLATE= "product_stock_%s";
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+
     @RabbitListener(queuesToDeclare = @Queue("productInfo"))
     public void process(String message){
-        ProductInfoOutput productInfoOutput = (ProductInfoOutput) JsonUtil.fromJson(message, ProductInfoOutput.class);
-        log.info("从队列【{}】接收到消息：{}","productInfo",productInfoOutput);
+        List<ProductInfoOutput> productInfoOutputs = (List<ProductInfoOutput>) JsonUtil.fromJson(message,
+                new TypeReference<List<ProductInfoOutput>>(){});
+        log.info("从队列【{}】接收到消息：{}","productInfo",productInfoOutputs);
+
+        //存储到redis
+        for (ProductInfoOutput productInfoOutput : productInfoOutputs){
+            stringRedisTemplate.opsForValue().set(
+                    String.format(PRODUCT_STOCK_TEMPLATE,productInfoOutput.getProductId()),
+                    String.valueOf(productInfoOutput.getProductStock()));
+        }
     }
 }

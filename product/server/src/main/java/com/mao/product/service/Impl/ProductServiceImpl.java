@@ -8,6 +8,8 @@ import com.mao.product.enums.ProductStatusEnum;
 import com.mao.product.enums.ResultEnum;
 import com.mao.product.exception.ProductException;
 import com.mao.product.service.ProductService;
+import com.mao.product.utils.JsonUtil;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductInfoDao repository;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     @Override
     public ProductInfo getOne(String productId) {
@@ -71,6 +76,11 @@ public class ProductServiceImpl implements ProductService {
             }
             productInfo.setProductStock(result);
             repository.save(productInfo);
+
+            //发送mq消息
+            ProductInfoOutput output = new ProductInfoOutput();
+            BeanUtils.copyProperties(productInfo,output);
+            amqpTemplate.convertAndSend("productInfo", JsonUtil.toJson(output));
         }
     }
 

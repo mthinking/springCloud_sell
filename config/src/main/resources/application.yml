@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/mthinking/config-repo.git
+          username: 502010435@qq.com
+          password: 18262387066mcy,.
+          basedir: E:/ideaSpance/springCloud_sell/config/basedir
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+management:
+  endpoints:
+    web:
+      expose: "*"

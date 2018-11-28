@@ -2,11 +2,9 @@ package com.mao.order.service.Impl;
 
 import com.mao.order.dao.OrderDetailDao;
 import com.mao.order.dao.OrderMasterDao;
-import com.mao.order.dto.CartDTO;
 import com.mao.order.dto.OrderDTO;
 import com.mao.order.entity.OrderDetail;
 import com.mao.order.entity.OrderMaster;
-import com.mao.order.entity.ProductInfo;
 import com.mao.order.enums.OrderStatusEnum;
 import com.mao.order.enums.PayStatusEnum;
 import com.mao.order.service.OrderService;

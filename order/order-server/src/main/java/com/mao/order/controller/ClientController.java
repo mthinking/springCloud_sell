@@ -1,7 +1,5 @@
 package com.mao.order.controller;
 
-import com.mao.order.dto.CartDTO;
-import com.mao.order.entity.ProductInfo;
 import com.mao.product.client.ProductClient;
 import com.mao.product.common.DecreaseStockInput;
 import com.mao.product.common.ProductInfoOutput;
@@ -20,6 +18,7 @@ public class ClientController {
 
     @Autowired
     private ProductClient productClient;
+
 
     @GetMapping("/product/listForOrder")
     public String getProductList(){

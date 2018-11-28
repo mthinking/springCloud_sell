@@ -6,10 +6,12 @@ import com.mao.product.entity.ProductCategory;
 import com.mao.product.entity.ProductInfo;
 import com.mao.product.service.CategoryService;
 import com.mao.product.service.ProductService;
+import com.mao.product.utils.JsonUtil;
 import com.mao.product.utils.ResultVOUtil;
 import com.mao.product.vo.ProductInfoVO;
 import com.mao.product.vo.ProductVO;
 import com.mao.product.vo.ResultVO;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,9 @@ public class ProductController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
 
     /**
      * 1. 查询所有在架的商品
@@ -83,7 +88,9 @@ public class ProductController {
     }
 
     @PostMapping("/decreaseStock")
-    public void decreaseStock(@RequestBody List<DecreaseStockInput> decreaseStockInputList) {
+    public String decreaseStock(@RequestBody List<DecreaseStockInput> decreaseStockInputList) {
         productService.decreaseStock(decreaseStockInputList);
+        return "succee";
     }
+
 }
